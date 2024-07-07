@@ -1,6 +1,6 @@
 
 
-# UDSM 2023 Students Eisting Dataset for Face Recognition
+# UDSM 2023 Students Existing Dataset for Face Recognition
 
 ## Overview
 

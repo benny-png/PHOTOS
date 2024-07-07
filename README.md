@@ -1,10 +1,11 @@
+
 ---
 
 # UDSM 2023 Students Dataset for Face Recognition
 
 ## Overview
 
-This code checks for the existence of images in the UDSM 2023 student dataset, which was to be used for face recognition based on student IDs. The dataset includes student photos along with their corresponding ID numbers. The primary purpose of this dataset is to facilitate face recognition tasks and experiments related to student identification. For example, an existing image can be accessed via the URL: ![link](https://aris3.udsm.ac.tz/uploaded_files/student/photos/2023-04-06833.jpg).
+This document provides details about the UDSM 2023 student dataset, which is intended for use in face recognition tasks based on student IDs. The dataset includes student photos along with their corresponding ID numbers. The primary purpose of this dataset is to facilitate face recognition tasks and experiments related to student identification. For example, an existing image can be accessed via the URL: ![Sample Image](https://aris3.udsm.ac.tz/uploaded_files/student/photos/2023-04-00001.jpg).
 
 ## Dataset Details
 

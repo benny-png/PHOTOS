@@ -29,12 +29,8 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Create necessary directories for DeepFace
-RUN mkdir -p /app/.deepface/weights && \
-    chown -R appuser:appuser /app/.deepface
-
-# Set the DEEPFACE_HOME environment variable
-ENV DEEPFACE_HOME=/app/.deepface
+# Create the .deepface directory and set permissions
+RUN mkdir -p /app/.deepface && chown -R appuser:appuser /app/.deepface
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
@@ -49,9 +45,6 @@ USER appuser
 
 # Copy the source code into the container.
 COPY --chown=appuser:appuser . .
-
-# Pre-download the model weights
-RUN python -c "from deepface import DeepFace; DeepFace.build_model('Facenet512')"
 
 # Expose the port that the application listens on.
 EXPOSE 8000

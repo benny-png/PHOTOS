@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 
 # UDSM 2023 Students Existing Dataset for Face Recognition
 
@@ -30,7 +28,7 @@ photos/
 ---
 
 This way, the URL is included as a clickable link without displaying the image directly.
-=======
+
 # Fastapi Template
 
 This is a template for fastapi projects. It includes a basic structure for the project, a docker-compose file for development and a dockerfile for production.

@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 deepface
 tf-keras
-=======
 #Sample requirements.txt file
 fastapi
 sqlmodel
@@ -10,4 +8,4 @@ deepface
 uvicorn
 tf-keras
 python-multipart
->>>>>>> 7a3de8c (Added API feature)
+

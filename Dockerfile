@@ -1,4 +1,4 @@
- # syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1
 
 # Use the specified Python version
 ARG PYTHON_VERSION=3.11.9
@@ -24,11 +24,16 @@ ARG UID=10001
 RUN adduser \
     --disabled-password \
     --gecos "" \
-    --home "/nonexistent" \
+    --home "/app" \
     --shell "/sbin/nologin" \
-    --no-create-home \
     --uid "${UID}" \
     appuser
+
+# Create a directory for DeepFace to use and set permissions
+RUN mkdir /app/.deepface && chown appuser:appuser /app/.deepface
+
+# Set the DEEPFACE_HOME environment variable
+ENV DEEPFACE_HOME=/app/.deepface
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
@@ -42,7 +47,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 USER appuser
 
 # Copy the source code into the container.
-COPY . .
+COPY --chown=appuser:appuser . .
 
 # Expose the port that the application listens on.
 EXPOSE 8000

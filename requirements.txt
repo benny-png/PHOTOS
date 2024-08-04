@@ -1,2 +1,11 @@
 deepface
 tf-keras
+#Sample requirements.txt file
+fastapi
+sqlmodel
+python-dotenv
+deepface
+uvicorn
+tf-keras
+python-multipart
+

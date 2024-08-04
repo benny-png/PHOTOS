@@ -29,8 +29,11 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Create the .deepface directory and set permissions
-RUN mkdir -p /app/.deepface && chown -R appuser:appuser /app/.deepface
+# Create a directory for DeepFace to use and set permissions
+RUN mkdir /app/.deepface && chown appuser:appuser /app/.deepface
+
+# Set the DEEPFACE_HOME environment variable
+ENV DEEPFACE_HOME=/app/.deepface
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.

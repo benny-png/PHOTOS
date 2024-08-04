@@ -4,8 +4,7 @@ from deepface import DeepFace
 from PIL import Image
 import io
 
-# If needed, set the environment variable for DeepFace home directory
-os.environ['DEEPFACE_HOME'] = '/app/deepface'
+
 
 model_name = "Facenet512"
 

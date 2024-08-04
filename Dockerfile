@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+ # syntax=docker/dockerfile:1
 
 # Use the specified Python version
 ARG PYTHON_VERSION=3.11.9
@@ -24,17 +24,11 @@ ARG UID=10001
 RUN adduser \
     --disabled-password \
     --gecos "" \
-    --home "/app" \  # Changed from /nonexistent to /app
+    --home "/nonexistent" \
     --shell "/sbin/nologin" \
     --no-create-home \
     --uid "${UID}" \
     appuser
-
-# Create a writable directory for DeepFace
-RUN mkdir -p /app/deepface && chown appuser:appuser /app/deepface
-
-# Set the environment variable for DeepFace
-ENV DEEPFACE_HOME=/app/deepface
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.

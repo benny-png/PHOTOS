@@ -29,8 +29,9 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Create a directory for DeepFace to use and set permissions
-RUN mkdir /app/.deepface && chown appuser:appuser /app/.deepface
+# Create necessary directories for DeepFace
+RUN mkdir -p /app/.deepface/weights && \
+    chown -R appuser:appuser /app/.deepface
 
 # Set the DEEPFACE_HOME environment variable
 ENV DEEPFACE_HOME=/app/.deepface
@@ -48,6 +49,9 @@ USER appuser
 
 # Copy the source code into the container.
 COPY --chown=appuser:appuser . .
+
+# Pre-download the model weights
+RUN python -c "from deepface import DeepFace; DeepFace.build_model('Facenet512')"
 
 # Expose the port that the application listens on.
 EXPOSE 8000

@@ -4,6 +4,12 @@ from app.utils.face_recog_functions import find_face_in_image
 from app.database.database import get_db, FaceRecognitionResult
 from io import BytesIO
 
+
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+IMAGE_FOLDER = os.path.join(BASE_DIR, "files", "downloaded_images_2023")
+
 face_recog_router = APIRouter()
 
 @face_recog_router.post("/recognize-face/")
@@ -17,7 +23,7 @@ async def recognize_face(file: UploadFile = File(...), db: Session = Depends(get
         image_path = file.filename
 
         # Process the file in-memory
-        detected_name = find_face_in_image(file_stream, "app/files/downloaded_images_2023/")
+        detected_name = find_face_in_image(file_stream, IMAGE_FOLDER)
         
         if detected_name is None:
             return {"not_found": "Face not found 🔍. Please ensure the image has a clear view of the face."}

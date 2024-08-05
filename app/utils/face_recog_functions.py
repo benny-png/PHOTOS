@@ -38,7 +38,7 @@ def find_face_in_image(file_stream: io.BytesIO, image_folder: str) -> str:
         
         try:
             # Use DeepFace to find the face in the temporary file
-            dfs = DeepFace.find(img_path=temp_file_name, db_path=image_folder, model_name=model_name, detector_backend='retinaface', refresh_database=False, distance_metric='euclidean_l2')
+            dfs = DeepFace.find(img_path=temp_file_name, db_path=image_folder, model_name=model_name, detector_backend='retinaface', refresh_database=True, distance_metric='euclidean_l2')
         except Exception as e:
             print(f"Error finding face with DeepFace: {e}")
             return f"Error finding face with DeepFace: {e}"

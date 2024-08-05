@@ -7,26 +7,41 @@ import io
 model_name = "Facenet512"
 
 # Load the DeepFace model once
-deepface_model = DeepFace.build_model(model_name)  # Build model only once
+try:
+    deepface_model = DeepFace.build_model(model_name)  # Build model only once
+except Exception as e:
+    print(f"Error loading DeepFace model: {e}")
+    deepface_model = None
 
 
 def find_face_in_image(file_stream: io.BytesIO, image_folder: str) -> str:
+    if deepface_model is None:
+        return "Error: DeepFace model is not loaded properly."
+    
     try:
         # Create a temporary file to hold the in-memory image
         with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
             temp_file_name = temp_file.name
             
-            # Save the in-memory file stream to the temporary file
-            image = Image.open(file_stream)
-            
-            # Convert image to RGB if it is not already
-            if image.mode != 'RGB':
-                image = image.convert('RGB')
-            
-            image.save(temp_file_name, format='JPEG')
+            try:
+                # Save the in-memory file stream to the temporary file
+                image = Image.open(file_stream)
+                
+                # Convert image to RGB if it is not already
+                if image.mode != 'RGB':
+                    image = image.convert('RGB')
+                
+                image.save(temp_file_name, format='JPEG')
+            except Exception as e:
+                print(f"Error saving image to temporary file: {e}")
+                return f"Error saving image to temporary file: {e}"
         
-        # Use DeepFace to find the face in the temporary file
-        dfs = DeepFace.find(img_path=temp_file_name, db_path=image_folder, model_name=model_name, detector_backend='retinaface', refresh_database=False, distance_metric='euclidean_l2')
+        try:
+            # Use DeepFace to find the face in the temporary file
+            dfs = DeepFace.find(img_path=temp_file_name, db_path=image_folder, model_name=model_name, detector_backend='retinaface', refresh_database=False, distance_metric='euclidean_l2')
+        except Exception as e:
+            print(f"Error finding face with DeepFace: {e}")
+            return f"Error finding face with DeepFace: {e}"
         
         # Clean up the temporary file
         os.remove(temp_file_name)
@@ -34,8 +49,6 @@ def find_face_in_image(file_stream: io.BytesIO, image_folder: str) -> str:
         if isinstance(dfs, list) and dfs:
             dfs = dfs[0]
             
-        print(dfs)
-        
         if not dfs.empty:
             if dfs['distance'].min() < 0.7:
                 
@@ -61,4 +74,4 @@ def find_face_in_image(file_stream: io.BytesIO, image_folder: str) -> str:
             return None
     except Exception as e:
         print(f"Error processing image: {e}")
-        return None
+        return f"Error processing image: {e}"

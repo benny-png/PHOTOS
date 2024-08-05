@@ -4,9 +4,7 @@ from app.utils.face_recog_functions import find_face_in_image
 from app.database.database import get_db, FaceRecognitionResult
 from io import BytesIO
 
-
 face_recog_router = APIRouter()
-
 
 @face_recog_router.post("/recognize-face/")
 async def recognize_face(file: UploadFile = File(...), db: Session = Depends(get_db)):
@@ -23,6 +21,10 @@ async def recognize_face(file: UploadFile = File(...), db: Session = Depends(get
         
         if detected_name is None:
             return {"not_found": "Face not found 🔍. Please ensure the image has a clear view of the face."}
+        
+        if "Error" in detected_name:
+            # If there is an error message returned from find_face_in_image, raise an HTTP exception
+            raise HTTPException(status_code=500, detail=detected_name)
         
         detected_names = detected_name.split()
         
@@ -43,29 +45,3 @@ async def recognize_face(file: UploadFile = File(...), db: Session = Depends(get
     except Exception as e:
         # Handle exceptions and return error response
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# ROUTE SAVING FILE TO DISK IMPLEMENTATION
-
-#@face_recog_router.post("/recognize-face/")
-#async def recognize_face(file: UploadFile = File(...), db: Session = Depends(get_db)):
-#    try:
-#        upload_dir = "app/files/uploaded_images/"
-#        file_location = save_uploaded_file(file, upload_dir)
-#        
-#        # Perform face detection
-#        detected_name = find_face_in_image(file_location, "app/files/downloaded_images_2023")
-#        
-#        if detected_name:
-#            # Save result to database
-#            result = FaceRecognitionResult(image_path=file_location, detected_name=detected_name)
-#            db.add(result)
-#            db.commit()
-#            db.refresh(result)
-#            return {"detected_name": detected_name}
-#        else:
-#            raise HTTPException(status_code=404, detail="Face not detected")
-#
-#    except Exception as e:
-#        # Handle exceptions and return error response
-#        raise HTTPException(status_code=500, detail=str(e))

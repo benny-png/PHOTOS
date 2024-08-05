@@ -17,7 +17,7 @@ async def recognize_face(file: UploadFile = File(...), db: Session = Depends(get
         image_path = file.filename
 
         # Process the file in-memory
-        detected_name = find_face_in_image(file_stream, "app/files/downloaded_images_2023")
+        detected_name = find_face_in_image(file_stream, "app/files/downloaded_images_2023/")
         
         if detected_name is None:
             return {"not_found": "Face not found 🔍. Please ensure the image has a clear view of the face."}

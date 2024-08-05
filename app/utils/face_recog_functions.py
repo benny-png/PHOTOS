@@ -10,8 +10,8 @@ model_name = "Facenet512"
 try:
     deepface_model = DeepFace.build_model(model_name)  # Build model only once
 except Exception as e:
-    print(f"Error loading DeepFace model: {e}")
     deepface_model = None
+    print(f"Error loading DeepFace model: {e}")
 
 
 def find_face_in_image(file_stream: io.BytesIO, image_folder: str) -> str:
@@ -48,7 +48,7 @@ def find_face_in_image(file_stream: io.BytesIO, image_folder: str) -> str:
         
         if isinstance(dfs, list) and dfs:
             dfs = dfs[0]
-            
+        
         if not dfs.empty:
             if dfs['distance'].min() < 0.7:
                 

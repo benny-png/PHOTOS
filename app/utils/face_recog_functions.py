@@ -42,9 +42,9 @@ def find_face_in_image(file_stream: io.BytesIO, image_folder: str) -> str:
         except Exception as e:
             print(f"Error finding face with DeepFace: {e}")
             return f"Error finding face with DeepFace: {e}"
-        
-        # Clean up the temporary file
-        os.remove(temp_file_name)
+        finally:
+            # Clean up the temporary file
+            os.remove(temp_file_name)
         
         if isinstance(dfs, list) and dfs:
             dfs = dfs[0]
